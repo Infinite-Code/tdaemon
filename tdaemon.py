@@ -23,7 +23,7 @@ import re
 import subprocess
 
 SPECIAL_CHARS_REGEX_PATTERN = r'[#&;`|*?~<>^()\[\]{}$\\]+' 
-IGNORE_EXTENSIONS = ('pyc', 'pyo')
+IGNORE_EXTENSIONS = ('pyc', 'pyo', 'swp')
 IGNORE_DIRS = ('.bzr', '.git', '.hg', '.darcs', '.svn', '.tox')
 IMPLEMENTED_TEST_PROGRAMS = ('nose', 'nosetests', 'django', 'py', 'symfony',
     'jelix', 'phpunit', 'sphinx', 'tox'
@@ -46,7 +46,7 @@ class CancelDueToUserRequest(Exception):
 def ask(message='Are you sure? [y/N]'):
     """Asks the user his opinion."""
     agree = False
-    answer = raw_input(message).lower()
+    answer = input(message).lower()
     if answer.startswith('y'):
         agree = True
     return agree
