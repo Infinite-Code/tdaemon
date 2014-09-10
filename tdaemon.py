@@ -9,6 +9,7 @@ http://jeffwinkler.net/nosy-run-python-unit-tests-automatically/
 The present code is published under the terms of the MIT License. See LICENSE
 file for more details.
 """
+from __future__ import print_function
 
 
 import sys
@@ -188,7 +189,7 @@ class Watcher(object):
                 if self.include(full_path):
                     if os.path.isfile(full_path):
                         # preventing fail if the file vanishes
-                        content = open(full_path).read()
+                        content = open(full_path, 'rb').read()
                         hashcode = hashlib.sha224(content).hexdigest()
                         file_list[full_path] = hashcode
             for name in dirs:
@@ -206,16 +207,16 @@ class Watcher(object):
         """Extracts differences between lists. For debug purposes"""
         for key in list1:
             if key in list2 and list2[key] != list1[key]:
-                print key
+                print(key)
             elif key not in list2:
-                print key
+                print(key)
 
     def run(self, cmd):
         """Runs the appropriate command"""
-        print datetime.datetime.now()
+        print(datetime.datetime.now())
         output = subprocess.Popen(cmd, shell=True)
         output = output.communicate()[0]
-        print output
+        print(output)
 
     def run_tests(self):
         """Execute tests"""
@@ -277,15 +278,17 @@ def main(prog_args=None):
             if not opt.quiet and not ask(message):
                 raise CancelDueToUserRequest('Ok, thx, bye...')
 
-        print "Ready to watch file changes..."
+        print("Ready to watch file changes...")
         watcher.loop()
     except (KeyboardInterrupt, SystemExit):
         # Ignore when you exit via Crtl-C
         pass
-    except Exception, msg:
-        print msg
+    except Exception as msg:
+        import traceback
+        traceback.print_exc()
+        print(msg)
 
-    print "Bye"
+    print("Bye")
 
 if __name__ == '__main__':
     main()
